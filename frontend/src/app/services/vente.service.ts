@@ -5,8 +5,7 @@ import { Stats, Vente } from '../models/vente.model';
 
 @Injectable({ providedIn: 'root' })
 export class VenteService {
-  private baseUrl = 'http://localhost:8080/api/ventes';
-
+private baseUrl = '/api/ventes';
   constructor(private http: HttpClient) {}
 
   getAll(range: 'today' | 'week' | 'month' | 'all' = 'all'): Observable<Vente[]> {
