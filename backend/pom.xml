@@ -1,5 +1,3 @@
-cd ~/Downloads/pharmacie-app
-cat > backend/pom.xml << 'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -67,8 +65,3 @@ cat > backend/pom.xml << 'EOF'
   </build>
 
 </project>
-EOF
-
-git add backend/pom.xml
-git commit -m "Fix: ajouter le driver PostgreSQL manquant"
-git push
