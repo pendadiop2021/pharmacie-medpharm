@@ -1,0 +1,21 @@
+:root{
+  --bg: #F2EEE2;
+  --paper: #FBF9F3;
+  --ink: #23301F;
+  --ink-soft: #5B6455;
+  --green: #1F6F4D;
+  --green-dark: #123D2B;
+  --amber: #C97A2B;
+  --amber-soft: #F1DFC4;
+  --line: #DAD2BA;
+  --coral: #AE4438;
+  --coral-soft: #F3DDD8;
+}
+*{ box-sizing: border-box; }
+html, body{
+  margin:0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+h1,h2,h3{ font-family:'Roboto Slab', serif; color: var(--green-dark); }

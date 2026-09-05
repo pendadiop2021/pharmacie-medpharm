@@ -1,0 +1,137 @@
+<div class="stats">
+  <div class="stat"><div class="label">Ventes aujourd'hui</div><div class="value">{{ stats.todayTotal | number:'1.0-0' }} FCFA</div></div>
+  <div class="stat"><div class="label">Articles vendus (jour)</div><div class="value">{{ stats.todayCount }}</div></div>
+  <div class="stat"><div class="label">Total du mois</div><div class="value">{{ stats.monthTotal | number:'1.0-0' }} FCFA</div></div>
+  <div class="stat"><div class="label">Total des enregistrements</div><div class="value">{{ stats.totalCount }}</div></div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>Nouvelle vente</h2>
+
+    <label for="client">Client (optionnel)</label>
+    <input id="client" type="text" [(ngModel)]="client" name="client" placeholder="Nom du client" autocomplete="off">
+
+    <label for="modePaiement">Mode de paiement</label>
+    <select id="modePaiement" [(ngModel)]="modePaiement" name="modePaiement">
+      <option value="Espèces">Espèces</option>
+      <option value="Wave">Wave</option>
+      <option value="Orange Money">Orange Money</option>
+      <option value="Carte bancaire">Carte bancaire</option>
+      <option value="Crédit">Crédit (à régler plus tard)</option>
+    </select>
+
+    <label for="date">Date</label>
+    <input id="date" type="date" [(ngModel)]="date" name="date">
+
+    <div class="sub-title">Ajouter un produit</div>
+
+    <label for="rechercheProduit">Rechercher un produit (par nom)</label>
+    <div class="autocomplete">
+      <input id="rechercheProduit" type="text" [(ngModel)]="rechercheProduit" name="rechercheProduit" [ngModelOptions]="{standalone: true}" placeholder="🔍 Paracétamol..." autocomplete="off">
+      <div class="suggestions" *ngIf="suggestionsProduits.length > 0">
+        <div class="suggestion" *ngFor="let p of suggestionsProduits" (click)="choisirProduit(p)">
+          <span class="s-nom">{{ p.nom }}</span>
+          <span class="s-meta">{{ p.prix | number:'1.0-0' }} FCFA · stock {{ p.stock }}</span>
+        </div>
+      </div>
+    </div>
+
+    <label for="code">Code produit (scanner ou saisir)</label>
+    <div class="scan-row">
+      <input id="code" type="text" [(ngModel)]="ligne.code" name="code" (ngModelChange)="onCodeChange()" placeholder="Code-barres / QR" autocomplete="off">
+      <button type="button" class="scan-btn" (click)="scannerOpen = true">⌗ Scanner</button>
+    </div>
+    <div class="match-hint" *ngIf="matchHint">{{ matchHint }}</div>
+
+    <label for="produit">Produit</label>
+    <input id="produit" type="text" [(ngModel)]="ligne.produit" name="produit" placeholder="Paracétamol 500mg" autocomplete="off">
+
+    <div class="row2">
+      <div>
+        <label for="quantite">Quantité</label>
+        <input id="quantite" type="number" min="1" step="1" [(ngModel)]="ligne.quantite" name="quantite">
+      </div>
+      <div>
+        <label for="prix">Prix unitaire (FCFA)</label>
+        <input id="prix" type="number" min="0" step="1" [(ngModel)]="ligne.prixUnitaire" name="prixUnitaire">
+      </div>
+    </div>
+
+    <div class="total-preview">
+      <span>Sous-total</span>
+      <span>{{ totalLigne | number:'1.0-0' }} FCFA</span>
+    </div>
+
+    <button type="button" class="secondary" (click)="ajouterAuPanier()">+ Ajouter au panier</button>
+
+    <div class="panier" *ngIf="panier.length > 0">
+      <div class="panier-title">Panier ({{ panier.length }} article{{ panier.length > 1 ? 's' : '' }})</div>
+      <div class="panier-ligne" *ngFor="let l of panier; let i = index">
+        <div class="panier-info">
+          <div class="panier-produit">{{ l.produit }}</div>
+          <div class="panier-meta">qté {{ l.quantite }} × {{ l.prixUnitaire | number:'1.0-0' }} FCFA</div>
+        </div>
+        <div class="panier-amount">
+          <span>{{ (l.quantite * l.prixUnitaire) | number:'1.0-0' }} FCFA</span>
+          <button class="del-btn" (click)="retirerDuPanier(i)" aria-label="Retirer">✕</button>
+        </div>
+      </div>
+      <div class="panier-total">
+        <span>Total du panier</span>
+        <span>{{ totalPanier | number:'1.0-0' }} FCFA</span>
+      </div>
+    </div>
+
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <button type="button" class="primary" (click)="validerVente()">Enregistrer la vente</button>
+
+    <div class="facture-link" *ngIf="lastSavedGroup">
+      <span>Vente enregistrée ({{ lastSavedGroup.length }} article{{ lastSavedGroup.length > 1 ? 's' : '' }}).</span>
+      <div class="facture-actions">
+        <button type="button" (click)="telechargerFactureGroupee()">⬇ Télécharger</button>
+        <button type="button" (click)="imprimerFactureGroupee()">🖨 Imprimer</button>
+      </div>
+    </div>
+
+    <div class="savestate">{{ saveState }}</div>
+  </div>
+
+  <div class="card">
+    <h2>Historique</h2>
+    <div class="tabs">
+      <div class="tab" [class.active]="currentRange==='today'" (click)="setRange('today')">Aujourd'hui</div>
+      <div class="tab" [class.active]="currentRange==='week'" (click)="setRange('week')">7 jours</div>
+      <div class="tab" [class.active]="currentRange==='month'" (click)="setRange('month')">Ce mois</div>
+      <div class="tab" [class.active]="currentRange==='all'" (click)="setRange('all')">Tout</div>
+    </div>
+
+    <div class="ledger">
+      <div class="empty" *ngIf="sales.length === 0">Aucune vente enregistrée pour cette période.</div>
+
+      <div class="entry" *ngFor="let s of sales">
+        <div class="info">
+          <div class="produit">{{ s.produit }}</div>
+          <div class="meta">{{ s.date }} · qté {{ s.quantite }}<ng-container *ngIf="s.client"> · {{ s.client }}</ng-container><ng-container *ngIf="s.modePaiement"> · {{ s.modePaiement }}</ng-container><ng-container *ngIf="s.code"> · {{ s.code }}</ng-container></div>
+        </div>
+        <div class="amount">
+          <span class="val">{{ s.total | number:'1.0-0' }} FCFA</span>
+          <button class="facture-btn" (click)="telechargerFacture(s)" title="Télécharger la facture">⬇</button>
+          <button class="facture-btn" (click)="imprimerFacture(s)" title="Imprimer la facture">🖨</button>
+          <button class="del-btn" (click)="remove(s.id)" aria-label="Supprimer">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ledger-total" *ngIf="sales.length > 0">
+      <span>Total affiché</span>
+      <span>{{ rangeTotal | number:'1.0-0' }} FCFA</span>
+    </div>
+  </div>
+</div>
+
+<app-scanner-modal
+  [open]="scannerOpen"
+  (closed)="scannerOpen = false"
+  (codeScanned)="onCodeScanned($event)">
+</app-scanner-modal>

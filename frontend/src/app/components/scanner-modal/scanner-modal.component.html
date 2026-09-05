@@ -1,0 +1,18 @@
+<div class="modal-overlay" [class.open]="open" (click)="$event.target === $event.currentTarget && close()">
+  <div class="modal">
+    <h3>
+      Scanner un code
+      <button class="close-x" (click)="close()" aria-label="Fermer">✕</button>
+    </h3>
+
+    <zxing-scanner *ngIf="open"
+      [formats]="allowedFormats"
+      (camerasFound)="onCamerasFound($event)"
+      (scanSuccess)="onScanSuccess($event)"
+      (scanError)="onScanError()"
+      (permissionResponse)="onPermissionResponse($event)">
+    </zxing-scanner>
+
+    <div class="scan-status" [class.err]="hasError">{{ statusMessage }}</div>
+  </div>
+</div>

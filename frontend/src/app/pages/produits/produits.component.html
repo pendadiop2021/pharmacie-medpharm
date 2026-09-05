@@ -1,0 +1,75 @@
+<div class="grid">
+  <div class="card">
+    <h2>Ajouter un produit</h2>
+    <form (ngSubmit)="submit()">
+      <label for="p-code">Code (optionnel — scanner ou saisir)</label>
+      <div class="scan-row">
+        <input id="p-code" type="text" [(ngModel)]="form.code" name="code" placeholder="Code-barres / QR" autocomplete="off">
+        <button type="button" class="scan-btn" (click)="scannerOpen = true">⌗ Scanner</button>
+      </div>
+
+      <label for="p-nom">Nom du produit</label>
+      <input id="p-nom" type="text" [(ngModel)]="form.nom" name="nom" placeholder="Paracétamol 500mg" autocomplete="off">
+
+      <div class="row2">
+        <div>
+          <label for="p-prix">Prix unitaire (FCFA)</label>
+          <input id="p-prix" type="number" min="0" step="1" [(ngModel)]="form.prix" name="prix">
+        </div>
+        <div>
+          <label for="p-stock">Stock initial</label>
+          <input id="p-stock" type="number" min="0" step="1" [(ngModel)]="form.stock" name="stock">
+        </div>
+      </div>
+      <div class="hint">Le stock initial n'est utilisé qu'à la création. Pour ajouter du stock à un produit existant, utilisez « + Réapprovisionner » dans le catalogue.</div>
+
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <button type="submit" class="primary">Enregistrer le produit</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Catalogue produits</h2>
+
+    <input
+      type="text"
+      class="search"
+      [(ngModel)]="recherche"
+      [ngModelOptions]="{standalone: true}"
+      placeholder="🔍 Rechercher un produit (nom ou code)"
+      autocomplete="off">
+
+    <div class="prod-list">
+      <div class="empty" *ngIf="produitsFiltres.length === 0">
+        {{ products.length === 0 ? "Aucun produit enregistré. Ajoutez-en un pour pouvoir le retrouver par scan." : "Aucun produit ne correspond à cette recherche." }}
+      </div>
+
+      <div class="prod-row" *ngFor="let p of produitsFiltres">
+        <div class="prod-main">
+          <div>
+            <div class="pname">{{ p.nom }}</div>
+            <div class="pmeta" *ngIf="p.code">{{ p.code }}</div>
+            <div class="pmeta pmeta-muted" *ngIf="!p.code">Pas de code associé</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="pprice">{{ p.prix | number:'1.0-0' }} FCFA</div>
+            <button class="del-btn" (click)="remove(p.id)" aria-label="Supprimer">✕</button>
+          </div>
+        </div>
+        <div class="prod-stock-row">
+          <span class="stock-badge" [class.stock-bas]="p.stock <= 5">Stock : {{ p.stock }}</span>
+          <div class="reappro">
+            <input type="number" min="1" step="1" [(ngModel)]="reappro[p.id!]" [ngModelOptions]="{standalone: true}" placeholder="Qté">
+            <button type="button" (click)="reapprovisionner(p)">+ Réapprovisionner</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-scanner-modal
+  [open]="scannerOpen"
+  (closed)="scannerOpen = false"
+  (codeScanned)="onCodeScanned($event)">
+</app-scanner-modal>
