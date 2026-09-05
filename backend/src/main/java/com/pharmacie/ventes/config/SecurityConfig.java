@@ -41,8 +41,7 @@ public class SecurityConfig {
             )
             .httpBasic(basic -> {})
             .headers(headers -> headers.frameOptions(frame -> frame.disable()))
-            .csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")));
-
+            .csrf(csrf -> csrf.disable());
         return http.build();
     }
 
