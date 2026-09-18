@@ -107,8 +107,7 @@ export class FactureService {
     doc.setFontSize(10);
     doc.text('Société et/ou Nom du client', xClient, yDate + 2);
     doc.setFont('helvetica', 'normal');
-    doc.text(meta.client && meta.client.trim() ? meta.client : 'Client comptoir', xClient, yDate + 7);
-
+    doc.text(meta.client && meta.client.trim() ? meta.client : 'MedPharm', xClient, yDate + 7);
     let y = 100;
     const colQuantiteX = MARGE + 2;
     const colDesignationX = MARGE + 22;
