@@ -90,6 +90,7 @@ export class ProduitsComponent implements OnInit {
 
   remove(id?: number): void {
     if (!id) return;
+    if (!confirm('Voulez-vous vraiment supprimer ce produit ?')) return;
     this.produitService.delete(id).subscribe(() => this.load());
   }
 }

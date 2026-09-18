@@ -242,6 +242,7 @@ export class VentesComponent implements OnInit {
 
   remove(id?: number): void {
     if (!id) return;
+    if (!confirm('Voulez-vous vraiment supprimer cette vente ?')) return;
     this.venteService.delete(id).subscribe(() => {
       this.loadStats();
       this.loadSales();
