@@ -13,14 +13,17 @@
 
       <div class="row2">
         <div>
-          <label for="p-prix">Prix unitaire (FCFA)</label>
-          <input id="p-prix" type="number" min="0" step="1" [(ngModel)]="form.prix" name="prix">
+          <label for="p-cession">Prix de cession (FCFA)</label>
+          <input id="p-cession" type="number" min="0" step="1" [(ngModel)]="form.prixCession" name="prixCession">
         </div>
         <div>
-          <label for="p-stock">Stock initial</label>
-          <input id="p-stock" type="number" min="0" step="1" [(ngModel)]="form.stock" name="stock">
+          <label for="p-vente">Prix de vente (FCFA)</label>
+          <input id="p-vente" type="number" min="0" step="1" [(ngModel)]="form.prixVente" name="prixVente">
         </div>
       </div>
+
+      <label for="p-stock">Stock initial</label>
+      <input id="p-stock" type="number" min="0" step="1" [(ngModel)]="form.stock" name="stock">
       <div class="hint">Le stock initial n'est utilisé qu'à la création. Pour ajouter du stock à un produit existant, utilisez « + Réapprovisionner » dans le catalogue.</div>
 
       <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
@@ -52,7 +55,10 @@
             <div class="pmeta pmeta-muted" *ngIf="!p.code">Pas de code associé</div>
           </div>
           <div style="display:flex; align-items:center; gap:10px;">
-            <div class="pprice">{{ p.prix | number:'1.0-0' }} FCFA</div>
+            <div class="pprice">
+              {{ p.prixVente | number:'1.0-0' }} FCFA
+              <span class="marge">(marge {{ (p.prixVente - p.prixCession) | number:'1.0-0' }} FCFA)</span>
+            </div>
             <button class="del-btn" (click)="remove(p.id)" aria-label="Supprimer">✕</button>
           </div>
         </div>

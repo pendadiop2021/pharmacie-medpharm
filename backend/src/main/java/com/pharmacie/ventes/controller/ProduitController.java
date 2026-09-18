@@ -54,11 +54,10 @@ public class ProduitController {
         }
 
         if (existing.isPresent()) {
-            // Mise a jour : on ne touche pas au stock ici (utiliser
-            // /reapprovisionner pour ca), seulement le nom et le prix.
             Produit toUpdate = existing.get();
             toUpdate.setNom(produit.getNom());
-            toUpdate.setPrix(produit.getPrix());
+            toUpdate.setPrixCession(produit.getPrixCession());
+            toUpdate.setPrixVente(produit.getPrixVente());
             return ResponseEntity.ok(repository.save(toUpdate));
         }
         if (produit.getStock() == null) {

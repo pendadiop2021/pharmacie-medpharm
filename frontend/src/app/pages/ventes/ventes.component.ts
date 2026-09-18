@@ -78,10 +78,10 @@ export class VentesComponent implements OnInit {
   choisirProduit(p: Produit): void {
     this.ligne.code = p.code;
     this.ligne.produit = p.nom;
-    this.ligne.prixUnitaire = p.prix;
+    this.ligne.prixUnitaire = p.prixVente;
     this.ligne.produitId = p.id;
     this.stockActuel = p.stock;
-    this.matchHint = `Produit reconnu : ${p.nom} (${p.prix} FCFA) — Stock restant : ${p.stock}`;
+    this.matchHint = `Produit reconnu : ${p.nom} (${p.prixVente} FCFA) — Stock restant : ${p.stock}`;
     this.rechercheProduit = '';
   }
 
@@ -124,10 +124,10 @@ export class VentesComponent implements OnInit {
     this.produitService.getByCode(code).subscribe({
       next: (p) => {
         this.ligne.produit = p.nom;
-        this.ligne.prixUnitaire = p.prix;
+        this.ligne.prixUnitaire = p.prixVente;
         this.ligne.produitId = p.id;
         this.stockActuel = p.stock;
-        this.matchHint = `Produit reconnu : ${p.nom} (${p.prix} FCFA) — Stock restant : ${p.stock}`;
+        this.matchHint = `Produit reconnu : ${p.nom} (${p.prixVente} FCFA) — Stock restant : ${p.stock}`;
       },
       error: () => {
         this.ligne.produitId = undefined;

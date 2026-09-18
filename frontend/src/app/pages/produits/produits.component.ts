@@ -28,8 +28,8 @@ export class ProduitsComponent implements OnInit {
     this.load();
   }
 
-  emptyForm(): Produit {
-    return { code: '', nom: '', prix: 0, stock: 0 };
+    emptyForm(): Produit {
+    return { code: '', nom: '', prixCession: 0, prixVente: 0, stock: 0 };
   }
 
   load(): void {
@@ -56,8 +56,12 @@ export class ProduitsComponent implements OnInit {
       this.errorMessage = 'Indiquez le nom du produit.';
       return;
     }
-    if (this.form.prix === null || this.form.prix === undefined || this.form.prix < 0) {
-      this.errorMessage = 'Indiquez un prix unitaire valide.';
+    if (this.form.prixCession === null || this.form.prixCession === undefined || this.form.prixCession < 0) {
+      this.errorMessage = 'Indiquez un prix de cession valide.';
+      return;
+    }
+    if (this.form.prixVente === null || this.form.prixVente === undefined || this.form.prixVente < 0) {
+      this.errorMessage = 'Indiquez un prix de vente valide.';
       return;
     }
 

@@ -1,5 +1,7 @@
 /Users/damembaye/Downloads/pharmacie-app/backend/src/main/java/com/pharmacie/ventes/VentesApplication.java
 /Users/damembaye/Downloads/pharmacie-app/backend/src/main/java/com/pharmacie/ventes/config/CorsConfig.java
+/Users/damembaye/Downloads/pharmacie-app/backend/src/main/java/com/pharmacie/ventes/config/SecurityConfig.java
+/Users/damembaye/Downloads/pharmacie-app/backend/src/main/java/com/pharmacie/ventes/config/SpaConfig.java
 /Users/damembaye/Downloads/pharmacie-app/backend/src/main/java/com/pharmacie/ventes/controller/ProduitController.java
 /Users/damembaye/Downloads/pharmacie-app/backend/src/main/java/com/pharmacie/ventes/controller/VenteController.java
 /Users/damembaye/Downloads/pharmacie-app/backend/src/main/java/com/pharmacie/ventes/dto/StatsResponse.java

@@ -23,7 +23,12 @@ public class Produit {
     @NotNull
     @PositiveOrZero
     @Column(nullable = false)
-    private Double prix;
+    private Double prixCession;
+
+    @NotNull
+    @PositiveOrZero
+    @Column(nullable = false)
+    private Double prixVente;
 
     @NotNull
     @PositiveOrZero
@@ -32,10 +37,11 @@ public class Produit {
 
     public Produit() {}
 
-    public Produit(String code, String nom, Double prix) {
+    public Produit(String code, String nom, Double prixCession, Double prixVente) {
         this.code = code;
         this.nom = nom;
-        this.prix = prix;
+        this.prixCession = prixCession;
+        this.prixVente = prixVente;
     }
 
     public Long getId() { return id; }
@@ -47,8 +53,11 @@ public class Produit {
     public String getNom() { return nom; }
     public void setNom(String nom) { this.nom = nom; }
 
-    public Double getPrix() { return prix; }
-    public void setPrix(Double prix) { this.prix = prix; }
+    public Double getPrixCession() { return prixCession; }
+    public void setPrixCession(Double prixCession) { this.prixCession = prixCession; }
+
+    public Double getPrixVente() { return prixVente; }
+    public void setPrixVente(Double prixVente) { this.prixVente = prixVente; }
 
     public Integer getStock() { return stock; }
     public void setStock(Integer stock) { this.stock = stock; }

@@ -8,3 +8,5 @@ com/pharmacie/ventes/dto/StatsResponse.class
 com/pharmacie/ventes/repository/ProduitRepository.class
 com/pharmacie/ventes/config/CorsConfig.class
 com/pharmacie/ventes/repository/VenteRepository.class
+com/pharmacie/ventes/config/SpaConfig.class
+com/pharmacie/ventes/config/SecurityConfig.class

@@ -49,3 +49,4 @@ input:focus{ outline:none; border-color: var(--green); box-shadow: 0 0 0 2px rgb
   border-radius:6px; padding:5px 10px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap;
 }
 .reappro button:hover{ background: var(--green); color:#fff; }
+.marge{ display:block; font-size:10.5px; color: var(--ink-soft); font-family:'IBM Plex Mono', monospace; font-weight:400; margin-top:2px; text-align:right; }

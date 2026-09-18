@@ -2,6 +2,7 @@ export interface Produit {
   id?: number;
   code?: string;
   nom: string;
-  prix: number;
+  prixCession: number;
+  prixVente: number;
   stock: number;
 }

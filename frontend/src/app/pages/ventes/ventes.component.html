@@ -32,8 +32,7 @@
       <div class="suggestions" *ngIf="suggestionsProduits.length > 0">
         <div class="suggestion" *ngFor="let p of suggestionsProduits" (click)="choisirProduit(p)">
           <span class="s-nom">{{ p.nom }}</span>
-          <span class="s-meta">{{ p.prix | number:'1.0-0' }} FCFA · stock {{ p.stock }}</span>
-        </div>
+          <span class="s-meta">{{ p.prixVente | number:'1.0-0' }} FCFA · stock {{ p.stock }}</span>        </div>
       </div>
     </div>
 
