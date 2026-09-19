@@ -45,6 +45,17 @@ export class ProduitsComponent implements OnInit {
       p.nom.toLowerCase().includes(q) || (p.code ?? '').toLowerCase().includes(q)
     );
   }
+  get valeurTotaleCession(): number {
+    return this.products.reduce((acc, p) => acc + p.prixCession * p.stock, 0);
+  }
+
+  get valeurTotaleVente(): number {
+    return this.products.reduce((acc, p) => acc + p.prixVente * p.stock, 0);
+  }
+
+  get margeTotale(): number {
+    return this.valeurTotaleVente - this.valeurTotaleCession;
+  }
 
   onCodeScanned(code: string): void {
     this.form.code = code;

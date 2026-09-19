@@ -50,3 +50,18 @@ input:focus{ outline:none; border-color: var(--green); box-shadow: 0 0 0 2px rgb
 }
 .reappro button:hover{ background: var(--green); color:#fff; }
 .marge{ display:block; font-size:10.5px; color: var(--ink-soft); font-family:'IBM Plex Mono', monospace; font-weight:400; margin-top:2px; text-align:right; }
+
+.stats-stock{
+  display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+  gap:12px; margin-bottom:22px;
+}
+.stat-stock{
+  background: var(--paper); border:1px solid var(--line); border-radius:10px; padding:14px 16px;
+}
+.stat-stock .label{
+  font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color: var(--ink-soft); margin-bottom:6px;
+}
+.stat-stock .value{
+  font-family:'IBM Plex Mono', monospace; font-size:18px; font-weight:500; color: var(--green-dark);
+}
+.stat-stock .marge-positive{ color: var(--amber); }

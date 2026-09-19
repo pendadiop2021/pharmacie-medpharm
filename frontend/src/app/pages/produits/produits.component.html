@@ -32,6 +32,20 @@
   </div>
 
   <div class="card">
+    <div class="stats-stock">
+      <div class="stat-stock">
+        <div class="label">Valeur du stock (cession)</div>
+        <div class="value">{{ valeurTotaleCession | number:'1.0-0' }} FCFA</div>
+      </div>
+      <div class="stat-stock">
+        <div class="label">Valeur du stock (vente)</div>
+        <div class="value">{{ valeurTotaleVente | number:'1.0-0' }} FCFA</div>
+      </div>
+      <div class="stat-stock">
+        <div class="label">Marge potentielle totale</div>
+        <div class="value marge-positive">{{ margeTotale | number:'1.0-0' }} FCFA</div>
+      </div>
+    </div>
     <h2>Catalogue produits</h2>
 
     <input
