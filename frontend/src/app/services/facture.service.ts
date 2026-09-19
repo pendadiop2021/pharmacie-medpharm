@@ -153,9 +153,9 @@ export class FactureService {
 
     y += 14;
 
-    if (logo) {
-      try { doc.addImage(logo, 'JPEG', MARGE, y, 38, 26); } catch { /* pas grave */ }
-    }
+  /*  if (logo) {
+      try { doc.addImage(logo, 'JPEG', MARGE, y, 38, 26); } catch { /* pas grave  }
+    } */
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(12);
