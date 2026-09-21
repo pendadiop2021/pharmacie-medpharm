@@ -2,7 +2,6 @@ package com.pharmacie.ventes.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
@@ -20,17 +19,12 @@ public class Produit {
     @Column(nullable = false)
     private String nom;
 
-    @NotNull
     @PositiveOrZero
-    @Column(nullable = false)
     private Double prixCession;
 
-    @NotNull
     @PositiveOrZero
-    @Column(nullable = false)
     private Double prixVente;
 
-    @NotNull
     @PositiveOrZero
     @Column(nullable = false)
     private Integer stock = 0;
