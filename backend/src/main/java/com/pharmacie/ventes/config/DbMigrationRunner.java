@@ -17,8 +17,8 @@ public class DbMigrationRunner implements CommandLineRunner {
     public void run(String... args) {
         executerSansEchouer("ALTER TABLE produits ALTER COLUMN prix_cession DROP NOT NULL");
         executerSansEchouer("ALTER TABLE produits ALTER COLUMN prix_vente DROP NOT NULL");
+        executerSansEchouer("ALTER TABLE produits DROP COLUMN IF EXISTS prix");
     }
-
     private void executerSansEchouer(String sql) {
         try {
             jdbcTemplate.execute(sql);
