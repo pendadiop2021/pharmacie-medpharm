@@ -113,6 +113,33 @@ export class VentesComponent implements OnInit {
   get rangeTotal(): number {
     return this.sales.reduce((acc, s) => acc + (s.total || 0), 0);
   }
+  get groupesAffiches(): { cle: string; ventes: Vente[]; total: number; date: string; client?: string }[] {
+    const map = new Map<string, Vente[]>();
+    for (const v of this.sales) {
+      const cle = v.reference || `seul-${v.id}`;
+      if (!map.has(cle)) map.set(cle, []);
+      map.get(cle)!.push(v);
+    }
+    return Array.from(map.entries())
+      .map(([cle, ventes]) => ({
+        cle,
+        ventes,
+        total: ventes.reduce((acc, v) => acc + (v.total ?? 0), 0),
+        date: ventes[0].date,
+        client: ventes[0].client
+      }))
+      .sort((a, b) => (b.ventes[0].createdAt || '').localeCompare(a.ventes[0].createdAt || ''));
+  }
+
+  removeGroupe(ventes: Vente[]): void {
+    const texte = ventes.length > 1 ? `ces ${ventes.length} ventes` : 'cette vente';
+    if (!confirm(`Voulez-vous vraiment supprimer ${texte} ?`)) return;
+    const requetes = ventes.filter(v => v.id).map(v => this.venteService.delete(v.id!));
+    forkJoin(requetes).subscribe(() => {
+      this.loadStats();
+      this.loadSales();
+    });
+  }
 
   onCodeChange(): void {
     const code = (this.ligne.code || '').trim();
@@ -191,6 +218,8 @@ export class VentesComponent implements OnInit {
       return;
     }
 
+        const reference = 'V' + Date.now().toString(36).toUpperCase();
+
     this.saveState = 'Enregistrement…';
     const requetes = this.panier.map(l => this.venteService.create({
       code: l.code,
@@ -200,7 +229,8 @@ export class VentesComponent implements OnInit {
       produitId: l.produitId,
       client: this.client,
       modePaiement: this.modePaiement,
-      date: this.date
+      date: this.date,
+      reference
     }));
 
     forkJoin(requetes).subscribe({
@@ -264,16 +294,14 @@ export class VentesComponent implements OnInit {
     this.factureService.telecharger(vente);
   }
 
-  imprimerFactureGroupee(): void {
-    if (this.lastSavedGroup) {
-      this.factureService.imprimerGroupee(this.lastSavedGroup);
-    }
+  imprimerFactureGroupee(ventes: Vente[] = this.lastSavedGroup ?? []): void {
+    if (ventes.length === 0) return;
+    this.factureService.imprimerGroupee(ventes);
   }
 
-  telechargerFactureGroupee(): void {
-    if (this.lastSavedGroup) {
-      this.factureService.telechargerGroupee(this.lastSavedGroup);
-    }
+  telechargerFactureGroupee(ventes: Vente[] = this.lastSavedGroup ?? []): void {
+    if (ventes.length === 0) return;
+    this.factureService.telechargerGroupee(ventes);
   }
 
   remove(id?: number): void {

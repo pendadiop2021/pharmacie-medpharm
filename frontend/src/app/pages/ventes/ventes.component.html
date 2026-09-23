@@ -110,18 +110,26 @@
     </div>
 
     <div class="ledger">
-      <div class="empty" *ngIf="sales.length === 0">Aucune vente enregistrée pour cette période.</div>
+      <div class="empty" *ngIf="groupesAffiches.length === 0">Aucune vente enregistrée pour cette période.</div>
 
-      <div class="entry" *ngFor="let s of sales">
+      <div class="entry" *ngFor="let g of groupesAffiches">
         <div class="info">
-          <div class="produit">{{ s.produit }}</div>
-          <div class="meta">{{ s.date }} · qté {{ s.quantite }}<ng-container *ngIf="s.client"> · {{ s.client }}</ng-container><ng-container *ngIf="s.modePaiement"> · {{ s.modePaiement }}</ng-container><ng-container *ngIf="s.code"> · {{ s.code }}</ng-container></div>
+          <div class="produit">
+            {{ g.ventes.length > 1 ? (g.ventes.length + ' articles') : g.ventes[0].produit }}
+          </div>
+          <div class="meta">
+            {{ g.date }}
+            <ng-container *ngIf="g.client"> · {{ g.client }}</ng-container>
+            <ng-container *ngIf="g.ventes[0].modePaiement"> · {{ g.ventes[0].modePaiement }}</ng-container>
+            <ng-container *ngIf="g.ventes.length === 1 && g.ventes[0].code"> · {{ g.ventes[0].code }}</ng-container>
+          </div>
+          <div class="meta" *ngIf="g.ventes.length > 1">{{ g.ventes.map(v => v.produit).join(', ') }}</div>
         </div>
         <div class="amount">
-          <span class="val">{{ s.total | number:'1.0-0' }} FCFA</span>
-          <button class="facture-btn" (click)="telechargerFacture(s)" title="Télécharger la facture">⬇</button>
-          <button class="facture-btn" (click)="imprimerFacture(s)" title="Imprimer la facture">🖨</button>
-          <button class="del-btn" (click)="remove(s.id)" aria-label="Supprimer">✕</button>
+          <span class="val">{{ g.total | number:'1.0-0' }} FCFA</span>
+          <button class="facture-btn" (click)="telechargerFactureGroupee(g.ventes)" title="Télécharger la facture">⬇</button>
+          <button class="facture-btn" (click)="imprimerFactureGroupee(g.ventes)" title="Imprimer la facture">🖨</button>
+          <button class="del-btn" (click)="removeGroupe(g.ventes)" aria-label="Supprimer">✕</button>
         </div>
       </div>
     </div>

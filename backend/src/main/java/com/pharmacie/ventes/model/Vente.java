@@ -23,6 +23,9 @@ public class Vente {
     @Column
     private Long produitId;
 
+    @Column
+    private String reference;
+
     @NotBlank
     @Column(nullable = false)
     private String produit;
@@ -66,6 +69,9 @@ public class Vente {
 
     public Long getProduitId() { return produitId; }
     public void setProduitId(Long produitId) { this.produitId = produitId; }
+
+    public String getReference() { return reference; }
+    public void setReference(String reference) { this.reference = reference; }
 
     public String getProduit() { return produit; }
     public void setProduit(String produit) { this.produit = produit; }

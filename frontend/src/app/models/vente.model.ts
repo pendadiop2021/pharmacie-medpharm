@@ -10,6 +10,7 @@ export interface Vente {
   produitId?: number;
   date: string; // format ISO yyyy-MM-dd
   createdAt?: string;
+  reference?: string;
 }
 
 export interface Stats {
