@@ -141,6 +141,10 @@ export class VentesComponent implements OnInit {
     });
   }
 
+  nomsProduits(ventes: Vente[]): string {
+    return ventes.map(v => v.produit).join(', ');
+  }
+
   onCodeChange(): void {
     const code = (this.ligne.code || '').trim();
     if (!code) {

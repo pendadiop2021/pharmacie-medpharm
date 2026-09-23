@@ -123,8 +123,7 @@
             <ng-container *ngIf="g.ventes[0].modePaiement"> · {{ g.ventes[0].modePaiement }}</ng-container>
             <ng-container *ngIf="g.ventes.length === 1 && g.ventes[0].code"> · {{ g.ventes[0].code }}</ng-container>
           </div>
-          <div class="meta" *ngIf="g.ventes.length > 1">{{ g.ventes.map(v => v.produit).join(', ') }}</div>
-        </div>
+          <div class="meta" *ngIf="g.ventes.length > 1">{{ nomsProduits(g.ventes) }}</div>        </div>
         <div class="amount">
           <span class="val">{{ g.total | number:'1.0-0' }} FCFA</span>
           <button class="facture-btn" (click)="telechargerFactureGroupee(g.ventes)" title="Télécharger la facture">⬇</button>
