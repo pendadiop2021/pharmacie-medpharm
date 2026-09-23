@@ -219,6 +219,42 @@ export class VentesComponent implements OnInit {
       }
     });
   }
+  private genererLignesDevis() {
+    return this.panier.map(l => ({
+      produit: l.produit,
+      quantite: l.quantite,
+      prixUnitaire: l.prixUnitaire,
+      total: l.quantite * l.prixUnitaire
+    }));
+  }
+
+  telechargerDevis(): void {
+    if (this.panier.length === 0) {
+      this.errorMessage = 'Ajoutez au moins un produit au panier avant de générer un devis.';
+      return;
+    }
+    const meta = {
+      id: 'DEV-' + Date.now().toString().slice(-6),
+      date: this.date,
+      client: this.client,
+      modePaiement: this.modePaiement
+    };
+    this.factureService.telechargerDevis(this.genererLignesDevis(), meta);
+  }
+
+  imprimerDevis(): void {
+    if (this.panier.length === 0) {
+      this.errorMessage = 'Ajoutez au moins un produit au panier avant de générer un devis.';
+      return;
+    }
+    const meta = {
+      id: 'DEV-' + Date.now().toString().slice(-6),
+      date: this.date,
+      client: this.client,
+      modePaiement: this.modePaiement
+    };
+    this.factureService.imprimerDevis(this.genererLignesDevis(), meta);
+  }
 
   imprimerFacture(vente: Vente): void {
     this.factureService.imprimer(vente);

@@ -57,8 +57,7 @@ export class FactureService {
     return this.logoPromise;
   }
 
-  private dessiner(doc: jsPDF, lignes: LigneFacture[], meta: MetaFacture, logo: string | null): void {
-    const droite = LARGEUR_PAGE - MARGE;
+  private dessiner(doc: jsPDF, lignes: LigneFacture[], meta: MetaFacture, logo: string | null, titre: string = 'FACTURE'): void {    const droite = LARGEUR_PAGE - MARGE;
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(18);
@@ -82,7 +81,7 @@ export class FactureService {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(16);
     doc.setTextColor(20, 20, 20);
-    doc.text('FACTURE', 115, 25);
+    doc.text(titre, 115, 25);
     doc.setFontSize(10);
     doc.text(`N° : ${meta.id ?? '-'}`, 115, 32);
 
@@ -177,10 +176,10 @@ export class FactureService {
     };
   }
 
-  private async construireFacture(lignes: LigneFacture[], meta: MetaFacture): Promise<jsPDF> {
+  private async construireFacture(lignes: LigneFacture[], meta: MetaFacture, titre: string = 'FACTURE'): Promise<jsPDF> {
     const logo = await this.chargerLogo();
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-    this.dessiner(doc, lignes, meta, logo);
+    this.dessiner(doc, lignes, meta, logo, titre);
     return doc;
   }
 
@@ -218,6 +217,16 @@ export class FactureService {
       ventes.map(v => this.venteEnLigne(v)),
       { id: premier.id, date: premier.date, client: premier.client, modePaiement: premier.modePaiement }
     );
+    doc.autoPrint();
+    window.open(doc.output('bloburl'), '_blank');
+  }
+  async telechargerDevis(lignes: LigneFacture[], meta: MetaFacture): Promise<void> {
+    const doc = await this.construireFacture(lignes, meta, 'DEVIS');
+    doc.save(`devis-${meta.id ?? Date.now()}.pdf`);
+  }
+
+  async imprimerDevis(lignes: LigneFacture[], meta: MetaFacture): Promise<void> {
+    const doc = await this.construireFacture(lignes, meta, 'DEVIS');
     doc.autoPrint();
     window.open(doc.output('bloburl'), '_blank');
   }

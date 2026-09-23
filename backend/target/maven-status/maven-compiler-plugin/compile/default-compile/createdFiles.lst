@@ -3,6 +3,7 @@ com/pharmacie/ventes/model/Produit.class
 com/pharmacie/ventes/config/CorsConfig$1.class
 com/pharmacie/ventes/model/Vente.class
 com/pharmacie/ventes/VentesApplication.class
+com/pharmacie/ventes/config/DbMigrationRunner.class
 com/pharmacie/ventes/controller/VenteController.class
 com/pharmacie/ventes/dto/StatsResponse.class
 com/pharmacie/ventes/repository/ProduitRepository.class

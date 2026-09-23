@@ -117,3 +117,5 @@ select:focus{ outline:none; border-color: var(--green); box-shadow: 0 0 0 2px rg
 .empty{ text-align:center; padding:40px 10px; color: var(--ink-soft); font-size:13.5px; }
 .ledger-total{ display:flex; justify-content:space-between; padding-top:14px; margin-top:4px; font-family:'IBM Plex Mono', monospace; font-size:15px; font-weight:600; color: var(--green-dark); }
 .savestate{ font-size:11px; color: var(--ink-soft); text-align:right; margin-top:8px; min-height:14px; }
+.devis-actions{ display:flex; gap:8px; margin-top:10px; }
+.devis-actions button{ flex:1; margin-top:0; }

@@ -81,6 +81,10 @@
         <span>{{ totalPanier | number:'1.0-0' }} FCFA</span>
       </div>
     </div>
+    <div class="devis-actions" *ngIf="panier.length > 0">
+      <button type="button" class="secondary" (click)="telechargerDevis()">📄 Devis (télécharger)</button>
+      <button type="button" class="secondary" (click)="imprimerDevis()">📄 Devis (imprimer)</button>
+    </div>
 
     <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
     <button type="button" class="primary" (click)="validerVente()">Enregistrer la vente</button>
