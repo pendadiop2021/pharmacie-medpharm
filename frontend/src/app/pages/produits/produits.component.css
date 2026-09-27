@@ -75,3 +75,8 @@ input:focus{ outline:none; border-color: var(--green); box-shadow: 0 0 0 2px rgb
 }
 .peremption-badge.bientot{ background: var(--amber-soft); color: var(--amber); }
 .peremption-badge.perime{ background: var(--coral-soft); color: var(--coral); font-weight:600; }
+.edit-btn{
+  background:none; border:none; cursor:pointer; color: var(--green-dark);
+  font-size:15px; line-height:1; padding:4px; border-radius:6px;
+}
+.edit-btn:hover{ background: var(--amber-soft); }

@@ -34,4 +34,8 @@ export class ProduitService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+
+  modifier(id: number, produit: Produit): Observable<Produit> {
+    return this.http.put<Produit>(`${this.baseUrl}/${id}`, produit);
+  }
 }

@@ -67,7 +67,32 @@ public class ProduitController {
         Produit saved = repository.save(produit);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<Produit> update(@PathVariable Long id, @Valid @RequestBody Produit produit) {
+        Produit existant = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produit introuvable"));
 
+        String code = produit.getCode();
+        if (code != null && code.isBlank()) {
+            code = null;
+        }
+        // Verifie qu'un AUTRE produit n'utilise pas deja ce code
+        if (code != null) {
+            Optional<Produit> autre = repository.findByCode(code);
+            if (autre.isPresent() && !autre.get().getId().equals(id)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ce code est deja utilise par un autre produit.");
+            }
+        }
+
+        existant.setCode(code);
+        existant.setNom(produit.getNom());
+        existant.setPrixCession(produit.getPrixCession());
+        existant.setPrixVente(produit.getPrixVente());
+        existant.setStock(produit.getStock());
+        existant.setDatePeremption(produit.getDatePeremption());
+
+        return ResponseEntity.ok(repository.save(existant));
+    }
     @PutMapping("/{id}/reapprovisionner")
     public ResponseEntity<Produit> reapprovisionner(@PathVariable Long id, @RequestBody Map<String, Integer> body) {
         Integer quantite = body.get("quantite");

@@ -96,6 +96,19 @@ export class ProduitsComponent implements OnInit {
       return;
     }
 
+    if (this.modeEdition && this.idEnEdition !== null) {
+      this.produitService.modifier(this.idEnEdition, this.form).subscribe({
+        next: () => {
+          this.annulerEdition();
+          this.load();
+        },
+        error: (err) => {
+          this.errorMessage = err?.error?.message || "Erreur de modification — vérifiez que le serveur est démarré.";
+        }
+      });
+      return;
+    }
+
     this.produitService.save(this.form).subscribe({
       next: () => {
         this.form = this.emptyForm();
@@ -105,6 +118,20 @@ export class ProduitsComponent implements OnInit {
         this.errorMessage = err?.error?.message || "Erreur d'enregistrement — vérifiez que le serveur est démarré.";
       }
     });
+  }
+
+  modifier(p: Produit): void {
+    this.modeEdition = true;
+    this.idEnEdition = p.id!;
+    this.form = { ...p };
+    this.errorMessage = '';
+  }
+
+  annulerEdition(): void {
+    this.modeEdition = false;
+    this.idEnEdition = null;
+    this.form = this.emptyForm();
+    this.errorMessage = '';
   }
 
   reapprovisionner(produit: Produit): void {
@@ -128,4 +155,6 @@ export class ProduitsComponent implements OnInit {
     if (!confirm('Voulez-vous vraiment supprimer ce produit ?')) return;
     this.produitService.delete(id).subscribe(() => this.load());
   }
+  modeEdition = false;
+  idEnEdition: number | null = null;
 }

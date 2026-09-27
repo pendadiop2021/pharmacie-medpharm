@@ -1,7 +1,6 @@
 <div class="grid">
   <div class="card">
-    <h2>Ajouter un produit</h2>
-    <form (ngSubmit)="submit()">
+    <h2>{{ modeEdition ? 'Modifier le produit' : 'Ajouter un produit' }}</h2>    <form (ngSubmit)="submit()">
       <label for="p-code">Code (optionnel — scanner ou saisir)</label>
       <div class="scan-row">
         <input id="p-code" type="text" [(ngModel)]="form.code" name="code" placeholder="Code-barres / QR" autocomplete="off">
@@ -29,8 +28,8 @@
       <input id="p-peremption" type="date" [(ngModel)]="form.datePeremption" name="datePeremption">      <div class="hint">Le stock initial n'est utilisé qu'à la création. Pour ajouter du stock à un produit existant, utilisez « + Réapprovisionner » dans le catalogue.</div>
 
       <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
-      <button type="submit" class="primary">Enregistrer le produit</button>
-    </form>
+      <button type="submit" class="primary">{{ modeEdition ? 'Enregistrer les modifications' : 'Enregistrer le produit' }}</button>
+      <button type="button" class="secondary" *ngIf="modeEdition" (click)="annulerEdition()">Annuler</button>    </form>
   </div>
 
   <div class="card">
@@ -78,9 +77,9 @@
               {{ p.prixVente | number:'1.0-0' }} FCFA
               <span class="marge">(marge {{ (p.prixVente - p.prixCession) | number:'1.0-0' }} FCFA)</span>
             </div>
+            <button class="edit-btn" (click)="modifier(p)" aria-label="Modifier">✎</button>
             <button class="del-btn" (click)="remove(p.id)" aria-label="Supprimer">✕</button>
           </div>
-        </div>
         <div class="prod-stock-row">
           <span class="stock-badge" [class.stock-bas]="p.stock <= 5">Stock : {{ p.stock }}</span>
           <span class="peremption-badge" *ngIf="p.datePeremption" [class.perime]="estPerime(p)" [class.bientot]="perimeBientot(p)">
