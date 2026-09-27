@@ -5,4 +5,5 @@ export interface Produit {
   prixCession: number;
   prixVente: number;
   stock: number;
+  datePeremption?: string;
 }

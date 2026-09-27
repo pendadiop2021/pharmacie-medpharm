@@ -58,6 +58,7 @@ public class ProduitController {
             toUpdate.setNom(produit.getNom());
             toUpdate.setPrixCession(produit.getPrixCession());
             toUpdate.setPrixVente(produit.getPrixVente());
+            toUpdate.setDatePeremption(produit.getDatePeremption());
             return ResponseEntity.ok(repository.save(toUpdate));
         }
         if (produit.getStock() == null) {

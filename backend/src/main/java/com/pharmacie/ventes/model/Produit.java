@@ -3,6 +3,7 @@ package com.pharmacie.ventes.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "produits")
@@ -28,6 +29,8 @@ public class Produit {
     @PositiveOrZero
     @Column(nullable = false)
     private Integer stock = 0;
+
+    private LocalDate datePeremption;
 
     public Produit() {}
 
@@ -55,4 +58,7 @@ public class Produit {
 
     public Integer getStock() { return stock; }
     public void setStock(Integer stock) { this.stock = stock; }
+
+    public LocalDate getDatePeremption() { return datePeremption; }
+    public void setDatePeremption(LocalDate datePeremption) { this.datePeremption = datePeremption; }
 }

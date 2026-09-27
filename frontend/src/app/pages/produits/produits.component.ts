@@ -28,8 +28,8 @@ export class ProduitsComponent implements OnInit {
     this.load();
   }
 
-    emptyForm(): Produit {
-    return { code: '', nom: '', prixCession: 0, prixVente: 0, stock: 0 };
+  emptyForm(): Produit {
+    return { code: '', nom: '', prixCession: 0, prixVente: 0, stock: 0, datePeremption: '' };
   }
 
   load(): void {
@@ -44,6 +44,26 @@ export class ProduitsComponent implements OnInit {
     return this.products.filter(p =>
       p.nom.toLowerCase().includes(q) || (p.code ?? '').toLowerCase().includes(q)
     );
+  }
+  private joursAvantPeremption(p: Produit): number | null {
+    if (!p.datePeremption) return null;
+    const aujourdHui = new Date(); aujourdHui.setHours(0, 0, 0, 0);
+    const dateExp = new Date(p.datePeremption + 'T00:00:00');
+    return Math.round((dateExp.getTime() - aujourdHui.getTime()) / (1000 * 60 * 60 * 24));
+  }
+
+  estPerime(p: Produit): boolean {
+    const j = this.joursAvantPeremption(p);
+    return j !== null && j < 0;
+  }
+
+  perimeBientot(p: Produit): boolean {
+    const j = this.joursAvantPeremption(p);
+    return j !== null && j >= 0 && j <= 90;
+  }
+
+  get produitsAlerte(): Produit[] {
+    return this.products.filter(p => this.estPerime(p) || this.perimeBientot(p));
   }
   get valeurTotaleCession(): number {
     return this.products.reduce((acc, p) => acc + p.prixCession * p.stock, 0);

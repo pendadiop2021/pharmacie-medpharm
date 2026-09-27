@@ -24,7 +24,9 @@
 
       <label for="p-stock">Stock initial</label>
       <input id="p-stock" type="number" min="0" step="1" [(ngModel)]="form.stock" name="stock">
-      <div class="hint">Le stock initial n'est utilisé qu'à la création. Pour ajouter du stock à un produit existant, utilisez « + Réapprovisionner » dans le catalogue.</div>
+
+      <label for="p-peremption">Date de péremption (optionnel)</label>
+      <input id="p-peremption" type="date" [(ngModel)]="form.datePeremption" name="datePeremption">      <div class="hint">Le stock initial n'est utilisé qu'à la création. Pour ajouter du stock à un produit existant, utilisez « + Réapprovisionner » dans le catalogue.</div>
 
       <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
       <button type="submit" class="primary">Enregistrer le produit</button>
@@ -45,6 +47,9 @@
         <div class="label">Marge potentielle totale</div>
         <div class="value marge-positive">{{ margeTotale | number:'1.0-0' }} FCFA</div>
       </div>
+    </div>
+    <div class="alerte-peremption" *ngIf="produitsAlerte.length > 0">
+      ⚠️ {{ produitsAlerte.length }} produit{{ produitsAlerte.length > 1 ? 's' : '' }} périmé{{ produitsAlerte.length > 1 ? 's' : '' }} ou bientôt périmé{{ produitsAlerte.length > 1 ? 's' : '' }}
     </div>
     <h2>Catalogue produits</h2>
 
@@ -78,7 +83,10 @@
         </div>
         <div class="prod-stock-row">
           <span class="stock-badge" [class.stock-bas]="p.stock <= 5">Stock : {{ p.stock }}</span>
-          <div class="reappro">
+          <span class="peremption-badge" *ngIf="p.datePeremption" [class.perime]="estPerime(p)" [class.bientot]="perimeBientot(p)">
+            {{ estPerime(p) ? '⚠️ Périmé' : (perimeBientot(p) ? '⏳ Expire bientôt' : '') }}
+            ({{ p.datePeremption }})
+          </span>          <div class="reappro">
             <input type="number" min="1" step="1" [(ngModel)]="reappro[p.id!]" [ngModelOptions]="{standalone: true}" placeholder="Qté">
             <button type="button" (click)="reapprovisionner(p)">+ Réapprovisionner</button>
           </div>
