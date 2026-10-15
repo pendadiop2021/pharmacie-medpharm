@@ -80,3 +80,11 @@ input:focus{ outline:none; border-color: var(--green); box-shadow: 0 0 0 2px rgb
   font-size:15px; line-height:1; padding:4px; border-radius:6px;
 }
 .edit-btn:hover{ background: var(--amber-soft); }
+.search-date-row{ display:flex; align-items:center; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+.search-date-row label{ margin:0; white-space:nowrap; }
+.search-date-row .search-date{ flex:1 1 140px; width:auto; }
+.clear-btn{
+  background:#fff; border:1px solid var(--line); border-radius:7px; padding:7px 12px;
+  font-size:13px; color: var(--ink-soft); cursor:pointer;
+}
+.clear-btn:hover{ background: var(--coral-soft); color: var(--coral); }

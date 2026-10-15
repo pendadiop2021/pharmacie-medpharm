@@ -108,7 +108,11 @@
       <div class="tab" [class.active]="currentRange==='month'" (click)="setRange('month')">Ce mois</div>
       <div class="tab" [class.active]="currentRange==='all'" (click)="setRange('all')">Tout</div>
     </div>
-
+    <div class="search-ventes">
+      <input type="text" class="search" [(ngModel)]="rechercheVente" (ngModelChange)="onRechercheVenteChange()" placeholder="🔍 Produit, client ou code" autocomplete="off">
+      <input type="date" class="search-date" [(ngModel)]="dateRechercheVente" (ngModelChange)="onRechercheVenteChange()">
+      <button type="button" class="clear-btn" *ngIf="rechercheVente || dateRechercheVente" (click)="effacerRechercheVente()">Effacer</button>
+    </div>
     <div class="ledger">
       <div class="empty" *ngIf="groupesAffiches.length === 0">Aucune vente enregistrée pour cette période.</div>
 
@@ -133,8 +137,8 @@
       </div>
     </div>
 
-    <div class="ledger-total" *ngIf="sales.length > 0">
-      <span>Total affiché</span>
+    <div class="ledger-total" *ngIf="groupesAffiches.length > 0">
+            <span>Total affiché</span>
       <span>{{ rangeTotal | number:'1.0-0' }} FCFA</span>
     </div>
   </div>

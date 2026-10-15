@@ -30,6 +30,8 @@ export class VentesComponent implements OnInit {
   sales: Vente[] = [];
   stats: Stats = { todayTotal: 0, todayCount: 0, monthTotal: 0, totalCount: 0 };
   currentRange: Range = 'today';
+  rechercheVente = '';
+  dateRechercheVente = '';
   scannerOpen = false;
 
   // Informations communes a la vente (client/date), partagees par toutes les lignes du panier
@@ -111,7 +113,7 @@ export class VentesComponent implements OnInit {
   }
 
   get rangeTotal(): number {
-    return this.sales.reduce((acc, s) => acc + (s.total || 0), 0);
+    return this.groupesAffiches.reduce((acc, g) => acc + g.total, 0);
   }
   get groupesAffiches(): { cle: string; ventes: Vente[]; total: number; date: string; client?: string }[] {
     const map = new Map<string, Vente[]>();
@@ -120,7 +122,20 @@ export class VentesComponent implements OnInit {
       if (!map.has(cle)) map.set(cle, []);
       map.get(cle)!.push(v);
     }
+
+    const q = this.rechercheVente.trim().toLowerCase();
+    const dateRecherche = this.dateRechercheVente;
+
     return Array.from(map.entries())
+      .filter(([, ventes]) => {
+        const correspondDate = !dateRecherche || ventes.some(v => v.date === dateRecherche);
+        const correspondTexte = !q || ventes.some(v =>
+          (v.produit ?? '').toLowerCase().includes(q) ||
+          (v.client ?? '').toLowerCase().includes(q) ||
+          (v.code ?? '').toLowerCase().includes(q)
+        );
+        return correspondDate && correspondTexte;
+      })
       .map(([cle, ventes]) => ({
         cle,
         ventes,
@@ -130,7 +145,6 @@ export class VentesComponent implements OnInit {
       }))
       .sort((a, b) => (b.ventes[0].createdAt || '').localeCompare(a.ventes[0].createdAt || ''));
   }
-
   removeGroupe(ventes: Vente[]): void {
     const texte = ventes.length > 1 ? `ces ${ventes.length} ventes` : 'cette vente';
     if (!confirm(`Voulez-vous vraiment supprimer ${texte} ?`)) return;
@@ -139,6 +153,16 @@ export class VentesComponent implements OnInit {
       this.loadStats();
       this.loadSales();
     });
+  }
+  onRechercheVenteChange(): void {
+    if ((this.rechercheVente.trim() || this.dateRechercheVente) && this.currentRange !== 'all') {
+      this.setRange('all');
+    }
+  }
+
+  effacerRechercheVente(): void {
+    this.rechercheVente = '';
+    this.dateRechercheVente = '';
   }
 
   nomsProduits(ventes: Vente[]): string {

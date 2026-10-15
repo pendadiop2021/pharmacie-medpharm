@@ -119,3 +119,11 @@ select:focus{ outline:none; border-color: var(--green); box-shadow: 0 0 0 2px rg
 .savestate{ font-size:11px; color: var(--ink-soft); text-align:right; margin-top:8px; min-height:14px; }
 .devis-actions{ display:flex; gap:8px; margin-top:10px; }
 .devis-actions button{ flex:1; margin-top:0; }
+.search-ventes{ display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+.search-ventes .search{ flex:2 1 180px; width:auto; }
+.search-ventes .search-date{ flex:1 1 140px; width:auto; }
+.clear-btn{
+  background:#fff; border:1px solid var(--line); border-radius:7px; padding:0 12px;
+  font-size:13px; color: var(--ink-soft); cursor:pointer;
+}
+.clear-btn:hover{ background: var(--coral-soft); color: var(--coral); }

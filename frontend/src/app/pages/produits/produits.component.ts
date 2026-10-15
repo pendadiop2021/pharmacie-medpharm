@@ -18,6 +18,7 @@ export class ProduitsComponent implements OnInit {
   errorMessage = '';
   scannerOpen = false;
   recherche = '';
+  dateRecherche = '';
 
   // Reapprovisionnement : id du produit en cours d'edition + quantite saisie
   reappro: { [id: number]: number } = {};
@@ -40,10 +41,19 @@ export class ProduitsComponent implements OnInit {
 
   get produitsFiltres(): Produit[] {
     const q = this.recherche.trim().toLowerCase();
-    if (!q) return this.products;
-    return this.products.filter(p =>
-      p.nom.toLowerCase().includes(q) || (p.code ?? '').toLowerCase().includes(q)
-    );
+    return this.products.filter(p => {
+      const correspondTexte = !q
+        || p.nom.toLowerCase().includes(q)
+        || (p.code ?? '').toLowerCase().includes(q);
+      const correspondDate = !this.dateRecherche
+        || (!!p.datePeremption && p.datePeremption <= this.dateRecherche);
+      return correspondTexte && correspondDate;
+    });
+  }
+
+  effacerRecherche(): void {
+    this.recherche = '';
+    this.dateRecherche = '';
   }
   private joursAvantPeremption(p: Produit): number | null {
     if (!p.datePeremption) return null;

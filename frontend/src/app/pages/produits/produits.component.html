@@ -59,6 +59,11 @@
       [ngModelOptions]="{standalone: true}"
       placeholder="🔍 Rechercher un produit (nom ou code)"
       autocomplete="off">
+          <div class="search-date-row">
+            <label for="dateRecherche">Expire au plus tard le</label>
+            <input id="dateRecherche" type="date" class="search-date" [(ngModel)]="dateRecherche" [ngModelOptions]="{standalone: true}">
+            <button type="button" class="clear-btn" *ngIf="recherche || dateRecherche" (click)="effacerRecherche()">Effacer</button>
+          </div>
 
     <div class="prod-list">
       <div class="empty" *ngIf="produitsFiltres.length === 0">
