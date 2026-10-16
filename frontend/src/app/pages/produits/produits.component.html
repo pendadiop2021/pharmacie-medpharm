@@ -51,6 +51,10 @@
       ⚠️ {{ produitsAlerte.length }} produit{{ produitsAlerte.length > 1 ? 's' : '' }} périmé{{ produitsAlerte.length > 1 ? 's' : '' }} ou bientôt périmé{{ produitsAlerte.length > 1 ? 's' : '' }}
     </div>
     <h2>Catalogue produits</h2>
+    <div class="inventaire-actions">
+      <button type="button" class="secondary" (click)="telechargerInventaire()">⬇ Inventaire (télécharger)</button>
+      <button type="button" class="secondary" (click)="imprimerInventaire()">🖨 Inventaire (imprimer)</button>
+    </div>
 
     <input
       type="text"

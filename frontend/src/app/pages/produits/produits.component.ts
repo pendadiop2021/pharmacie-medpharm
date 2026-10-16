@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ProduitService } from '../../services/produit.service';
 import { Produit } from '../../models/produit.model';
 import { ScannerModalComponent } from '../../components/scanner-modal/scanner-modal.component';
+import { InventaireService } from '../../services/inventaire.service';
 
 @Component({
   selector: 'app-produits',
@@ -23,7 +24,10 @@ export class ProduitsComponent implements OnInit {
   // Reapprovisionnement : id du produit en cours d'edition + quantite saisie
   reappro: { [id: number]: number } = {};
 
-  constructor(private produitService: ProduitService) {}
+  constructor(
+    private produitService: ProduitService,
+    private inventaireService: InventaireService
+  ) {}
 
   ngOnInit(): void {
     this.load();
@@ -158,6 +162,21 @@ export class ProduitsComponent implements OnInit {
         this.errorMessage = err?.error?.message || "Erreur lors du réapprovisionnement.";
       }
     });
+  }
+  telechargerInventaire(): void {
+    if (this.products.length === 0) {
+      alert('Aucun produit à inventorier.');
+      return;
+    }
+    this.inventaireService.telecharger(this.products);
+  }
+
+  imprimerInventaire(): void {
+    if (this.products.length === 0) {
+      alert('Aucun produit à inventorier.');
+      return;
+    }
+    this.inventaireService.imprimer(this.products);
   }
 
   remove(id?: number): void {
